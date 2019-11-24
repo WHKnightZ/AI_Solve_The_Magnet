@@ -16,14 +16,14 @@ int currentDest;
 Point listPoint[2][16];
 int countPoint[2];
 int currentList = 0, rCurrentList;
-int canMove[] = { 0, 0, 1, 0, 1 };
-int canMove2[] = { 0, 0, 1, 1, 1 };
-int Mx[] = { 0, 1, 0, -1 };
-int My[] = { -1, 0, 1, 0 };
+int canMove[] = {0, 0, 1, 0, 1};
+int canMove2[] = {0, 0, 1, 1, 1};
+int Mx[] = {0, 1, 0, -1};
+int My[] = {-1, 0, 1, 0};
 
 typedef struct Path {
     Point point;
-    struct Path* next;
+    struct Path *next;
 } Path;
 
 typedef struct Change {
@@ -32,13 +32,13 @@ typedef struct Change {
 
 typedef struct ListChange {
     char x, y;
-    Path* path;
-    Change* change[4];
+    Path *path;
+    Change *change[4];
     int count, prev;
 } ListChange;
 
 typedef struct Degree {
-    ListChange* list[MAXLIST];
+    ListChange *list[MAXLIST];
     int count;
 } Degree;
 
@@ -49,8 +49,8 @@ typedef struct ExistList {
 ExistList existList[MAXDEG];
 int countExistList;
 
-ListChange* tmpList;
-Path* tmpPath;
+ListChange *tmpList;
+Path *tmpPath;
 
 Degree deg[MAXDEG];
 int currentDeg;
@@ -65,9 +65,8 @@ int nn;
 int ListPrev[MAXDEG];
 int tX, tY;
 
-void importMap(const char* map)
-{
-    FILE* f = fopen(map, "r");
+void importMap(const char *map) {
+    FILE *f = fopen(map, "r");
     fscanf(f, "%d%d%d", &X, &Y, &P);
     for (i = 0; i < 8; i++) {
         for (j = 0; j < 8; j++) {
@@ -83,8 +82,7 @@ void importMap(const char* map)
     fclose(f);
 }
 
-void ChangeFunc(Change* c)
-{
+void ChangeFunc(Change *c) {
     switch (c->type) {
     case 0:
         Map[Y][X] = 2;
@@ -97,8 +95,7 @@ void ChangeFunc(Change* c)
     }
 }
 
-void UndoChangeFunc(Change* c)
-{
+void UndoChangeFunc(Change *c) {
     switch (c->type) {
     case 0:
         Map[Y][X] = 4;
@@ -111,8 +108,7 @@ void UndoChangeFunc(Change* c)
     }
 }
 
-int IsExist(Change* c)
-{
+int IsExist(Change *c) {
     for (nn = 0; nn < countExistList; nn++) {
         if (existList[nn].x == c->x && existList[nn].y == c->y && existList[nn].i == c->i && existList[nn].j == c->j)
             return 1;
@@ -120,8 +116,7 @@ int IsExist(Change* c)
     return 0;
 }
 
-int BFS()
-{
+int BFS() {
     for (i = 0; i < 8; i++) {
         for (j = 0; j < 8; j++)
             tmpMap[i][j].x = -2;
@@ -156,17 +151,16 @@ int BFS()
             }
             if (Map[tY][tX] == 4) {
                 isChange = 1;
-                deg[currentDeg + 1].list[deg[currentDeg + 1].count] = (ListChange*)malloc(sizeof(ListChange));
+                deg[currentDeg + 1].list[deg[currentDeg + 1].count] = (ListChange *)malloc(sizeof(ListChange));
                 tmpList = deg[currentDeg + 1].list[deg[currentDeg + 1].count];
                 deg[currentDeg + 1].count++;
                 tmpList->prev = nList;
                 tmpList->x = tX;
                 tmpList->y = tY;
-                tmpList->change[0] = (Change*)malloc(sizeof(Change));
+                tmpList->change[0] = (Change *)malloc(sizeof(Change));
                 tmpList->change[0]->type = 0;
                 tmpList->count = 1;
-            }
-            else {
+            } else {
                 for (j = 0; j < 4; j++) {
                     tmpX = tX + Mx[j];
                     tmpY = tY + My[j];
@@ -177,7 +171,7 @@ int BFS()
                             if (canMove[Map[tmpY + My[j]][tmpX + Mx[j]]] && MB[tmpY + My[j]][tmpX + Mx[j]] == -1) {
                                 if (!isChange) {
                                     isChange = 1;
-                                    deg[currentDeg + 1].list[deg[currentDeg + 1].count] = (ListChange*)malloc(sizeof(ListChange));
+                                    deg[currentDeg + 1].list[deg[currentDeg + 1].count] = (ListChange *)malloc(sizeof(ListChange));
                                     tmpList = deg[currentDeg + 1].list[deg[currentDeg + 1].count];
                                     deg[currentDeg + 1].count++;
                                     tmpList->count = 0;
@@ -185,7 +179,7 @@ int BFS()
                                     tmpList->x = tX;
                                     tmpList->y = tY;
                                 }
-                                tmpList->change[tmpList->count] = (Change*)malloc(sizeof(Change));
+                                tmpList->change[tmpList->count] = (Change *)malloc(sizeof(Change));
                                 tmpList->change[tmpList->count]->type = 1;
                                 tmpList->change[tmpList->count]->x = tmpX;
                                 tmpList->change[tmpList->count]->y = tmpY;
@@ -194,12 +188,11 @@ int BFS()
                                 tmpList->count++;
                             }
                             break;
-                        }
-                        else if (MB[tmpY][tmpX] == 1 - P) {
+                        } else if (MB[tmpY][tmpX] == 1 - P) {
                             if (tmpX - Mx[j] != tX || tmpY - My[j] != tY) {
                                 if (!isChange) {
                                     isChange = 1;
-                                    deg[currentDeg + 1].list[deg[currentDeg + 1].count] = (ListChange*)malloc(sizeof(ListChange));
+                                    deg[currentDeg + 1].list[deg[currentDeg + 1].count] = (ListChange *)malloc(sizeof(ListChange));
                                     tmpList = deg[currentDeg + 1].list[deg[currentDeg + 1].count];
                                     deg[currentDeg + 1].count++;
                                     tmpList->count = 0;
@@ -207,7 +200,7 @@ int BFS()
                                     tmpList->x = tX;
                                     tmpList->y = tY;
                                 }
-                                tmpList->change[tmpList->count] = (Change*)malloc(sizeof(Change));
+                                tmpList->change[tmpList->count] = (Change *)malloc(sizeof(Change));
                                 tmpList->change[tmpList->count]->type = 1;
                                 tmpList->change[tmpList->count]->x = tmpX;
                                 tmpList->change[tmpList->count]->y = tmpY;
@@ -225,13 +218,13 @@ int BFS()
             if (isChange) {
                 tmpX = tX;
                 tmpY = tY;
-                tmpList->path = (Path*)malloc(sizeof(Path));
+                tmpList->path = (Path *)malloc(sizeof(Path));
                 tmpPath = tmpList->path;
                 tmpPath->next = NULL;
                 tmpPath->point.x = tmpX;
                 tmpPath->point.y = tmpY;
                 while (tmpMap[tmpY][tmpX].x != -1) {
-                    tmpPath->next = (Path*)malloc(sizeof(Path));
+                    tmpPath->next = (Path *)malloc(sizeof(Path));
                     tmpPath = tmpPath->next;
                     tmpPath->next = NULL;
                     tmpPath->point.x = tmpMap[tmpY][tmpX].x;
@@ -286,8 +279,7 @@ int BFS()
     return 0;
 }
 
-void GotoDest()
-{
+void GotoDest() {
     for (l = currentDest - 2; l >= 0; l--) {
         if (listDest[l].x == X) {
             if (listDest[l].y == Y + 1)
@@ -295,8 +287,7 @@ void GotoDest()
             else
                 printf("Up -> ");
             Y = listDest[l].y;
-        }
-        else {
+        } else {
             if (listDest[l].x == X + 1)
                 printf("Right -> ");
             else
@@ -307,8 +298,7 @@ void GotoDest()
     printf("Dest");
 }
 
-int main()
-{
+int main() {
     importMap("Map1.txt");
     currentDeg = -1;
     deg[currentDeg + 1].count = 0;
@@ -358,8 +348,7 @@ int main()
                             else
                                 printf("Up -> ");
                             Y = listPath[l].y;
-                        }
-                        else {
+                        } else {
                             if (listPath[l].x == X + 1)
                                 printf("Right -> ");
                             else
@@ -378,8 +367,7 @@ int main()
                     if (k > 0) {
                         X = deg[k - 1].list[ListPrev[k - 1]]->x;
                         Y = deg[k - 1].list[ListPrev[k - 1]]->y;
-                    }
-                    else {
+                    } else {
                         X = xx;
                         Y = yy;
                     }

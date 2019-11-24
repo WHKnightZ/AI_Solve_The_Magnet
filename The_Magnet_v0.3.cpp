@@ -19,12 +19,10 @@ struct Point {
 struct Change {
     char type, x, y, i, j;
     Change() {}
-    Change(char type)
-    {
+    Change(char type) {
         this->type = type;
     }
-    Change(char type, char x, char y, char i, char j)
-    {
+    Change(char type, char x, char y, char i, char j) {
         this->type = type;
         this->x = x;
         this->y = y;
@@ -40,19 +38,19 @@ struct ListUndo {
 
 struct Path {
     Point point;
-    struct Path* next;
+    struct Path *next;
 };
 
 struct ListChange {
     char x, y;
-    Path* path;
-    Change* change[4];
+    Path *path;
+    Change *change[4];
     char count;
     int prev;
 };
 
 struct Degree {
-    ListChange* list[MAXLIST];
+    ListChange *list[MAXLIST];
     int count;
 };
 
@@ -60,9 +58,9 @@ struct ExistList {
     char x, y, i, j;
 };
 
-ListChange* tmpList;
-Path* tmpPath;
-int* ptr;
+ListChange *tmpList;
+Path *tmpPath;
+int *ptr;
 Point listPath[MAXDEG];
 int currentPath;
 Point listDest[20];
@@ -97,14 +95,13 @@ char txtNewGame[] = "new game";
 char txtContinue[] = "continue";
 char txtDone[] = "Done!";
 char txtCanSolve[] = "Can't Solve!";
-int Mx[] = { 1, 0, -1, 0 }, My[] = { 0, 1, 0, -1 };
-char c, NumText[][3] = { "01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26", "27", "28", "29", "30" };
-int canMove[] = { 0, 1, 0, 1 };
-int canMove2[] = { 0, 1, 1, 1 };
+int Mx[] = {1, 0, -1, 0}, My[] = {0, 1, 0, -1};
+char c, NumText[][3] = {"01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26", "27", "28", "29", "30"};
+int canMove[] = {0, 1, 0, 1};
+int canMove2[] = {0, 1, 1, 1};
 char str[10];
 
-void DrawMagnet()
-{
+void DrawMagnet() {
     tmpX = STARTX + X * WIDTH + 14;
     tmpY = STARTY + Y * WIDTH + 14;
     setfillstyle(1, 0);
@@ -117,8 +114,7 @@ void DrawMagnet()
     bar(tmpX + 28, tmpY + 28, tmpX + 42, tmpY + 42);
 }
 
-void ClearMagnet()
-{
+void ClearMagnet() {
     tmpX = STARTX + X * WIDTH + 14;
     tmpY = STARTY + Y * WIDTH + 14;
     setfillstyle(1, BGC);
@@ -127,8 +123,7 @@ void ClearMagnet()
     bar(tmpX, tmpY + 28, tmpX + 42, tmpY + 42);
 }
 
-void DrawMagnetBox(int x, int y, int p)
-{
+void DrawMagnetBox(int x, int y, int p) {
     tmpX = STARTX + x * WIDTH + 14;
     tmpY = STARTY + y * WIDTH + 14;
     tmp = 4 - p * 3;
@@ -139,8 +134,7 @@ void DrawMagnetBox(int x, int y, int p)
     bar(tmpX, tmpY + 28, tmpX + 42, tmpY + 42);
 }
 
-void ClearMagnetBox(int x, int y)
-{
+void ClearMagnetBox(int x, int y) {
     tmpX = STARTX + x * WIDTH + 14;
     tmpY = STARTY + y * WIDTH + 14;
     setfillstyle(1, BGC);
@@ -150,8 +144,7 @@ void ClearMagnetBox(int x, int y)
     bar(tmpX, tmpY + 28, tmpX + 42, tmpY + 42);
 }
 
-void DrawWall(int x, int y)
-{
+void DrawWall(int x, int y) {
     x = STARTX + x * WIDTH;
     y = STARTY + y * WIDTH;
     setfillstyle(1, 8);
@@ -165,8 +158,7 @@ void DrawWall(int x, int y)
     bar(x + 10, y + 10, x + 60, y + 60);
 }
 
-void DrawNothing(int x, int y)
-{
+void DrawNothing(int x, int y) {
     x = STARTX + x * WIDTH;
     y = STARTY + y * WIDTH;
     setbkcolor(BGC);
@@ -181,8 +173,7 @@ void DrawNothing(int x, int y)
     bar(x + 42, y + 56, x + 70, y + 70);
 }
 
-void DrawDest(int x, int y)
-{
+void DrawDest(int x, int y) {
     x = STARTX + x * WIDTH + 14;
     y = STARTY + y * WIDTH + 14;
     setbkcolor(10);
@@ -190,16 +181,14 @@ void DrawDest(int x, int y)
     bar(x, y, x + 42, y + 42);
 }
 
-void DrawSwitch(int x, int y)
-{
+void DrawSwitch(int x, int y) {
     x = STARTX + x * WIDTH + 28;
     y = STARTY + y * WIDTH + 28;
     setfillstyle(1, 2);
     bar(x, y, x + 14, y + 14);
 }
 
-void ClearSwitch(int x, int y)
-{
+void ClearSwitch(int x, int y) {
     x = STARTX + x * WIDTH + 28;
     y = STARTY + y * WIDTH + 28;
     setfillstyle(1, BGC);
@@ -208,8 +197,7 @@ void ClearSwitch(int x, int y)
 
 void (*DrawPath[4])(int x, int y);
 
-void UndoFunc(Change c)
-{
+void UndoFunc(Change c) {
     switch (c.type) {
     case 0:
         ClearMagnet();
@@ -232,8 +220,7 @@ void UndoFunc(Change c)
     }
 }
 
-void BackGround()
-{
+void BackGround() {
     setcolor(8);
     setfillstyle(1, BGC);
     for (int i = 1; i < 8; i++)
@@ -241,10 +228,9 @@ void BackGround()
     bar(9, 9, MAXX - 8, MAXY - 8);
 }
 
-int ImportMap()
-{
-    FILE* f;
-    int* n;
+int ImportMap() {
+    FILE *f;
+    int *n;
     sprintf(str, "Map%d.txt", Level);
     f = fopen(str, "r");
     if (f == NULL)
@@ -272,8 +258,7 @@ int ImportMap()
     return 1;
 }
 
-void DrawSelect(int x, int y)
-{
+void DrawSelect(int x, int y) {
     setfillstyle(1, 4);
     x = 110 + x * 100;
     y = 160 + y * 100;
@@ -287,8 +272,7 @@ void DrawSelect(int x, int y)
     bar(x + 65, y + 75, x + 80, y + 80);
 }
 
-void ClearSelect(int x, int y)
-{
+void ClearSelect(int x, int y) {
     setfillstyle(1, BGC);
     x = 110 + x * 100;
     y = 160 + y * 100;
@@ -302,8 +286,7 @@ void ClearSelect(int x, int y)
     bar(x + 65, y + 75, x + 80, y + 80);
 }
 
-void ChangeFunc(Change* c)
-{
+void ChangeFunc(Change *c) {
     switch (c->type) {
     case 0:
         Map[Y][X] = 1;
@@ -316,8 +299,7 @@ void ChangeFunc(Change* c)
     }
 }
 
-void UndoChangeFunc(Change* c)
-{
+void UndoChangeFunc(Change *c) {
     switch (c->type) {
     case 0:
         Map[Y][X] = 3;
@@ -330,8 +312,7 @@ void UndoChangeFunc(Change* c)
     }
 }
 
-int IsExist(Change* c)
-{
+int IsExist(Change *c) {
     for (nn = 0; nn < countExistList; nn++) {
         if (existList[nn].x == c->x && existList[nn].y == c->y && existList[nn].i == c->i && existList[nn].j == c->j)
             return 1;
@@ -339,8 +320,7 @@ int IsExist(Change* c)
     return 0;
 }
 
-int BFS()
-{
+int BFS() {
     for (i = 0; i < 8; i++) {
         for (j = 0; j < 8; j++)
             tmpMap[i][j].x = -2;
@@ -497,8 +477,7 @@ int BFS()
     return 0;
 }
 
-void GotoDest()
-{
+void GotoDest() {
     for (l = currentDest - 2; l >= 0; l--) {
         ClearMagnet();
         X = listDest[l].x;
@@ -513,16 +492,14 @@ void GotoDest()
     delay(500);
 }
 
-void MoveFunc(char& x, char& y)
-{
+void MoveFunc(char &x, char &y) {
     ClearMagnet();
     X = x;
     Y = y;
     DrawMagnet();
 }
 
-void ActionFunc(ListChange* lc)
-{
+void ActionFunc(ListChange *lc) {
     if (lc->count == 1) {
         if (lc->change[0]->type == 0) {
             ClearSwitch(X, Y);
@@ -546,9 +523,8 @@ void ActionFunc(ListChange* lc)
         }
 }
 
-void FreeMemory()
-{
-    Path* tmpPath2;
+void FreeMemory() {
+    Path *tmpPath2;
     for (i = 0; i <= currentDeg; i++) {
         for (j = 0; j < deg[i].count; j++) {
             for (k = 0; k < deg[i].list[j]->count; k++)
@@ -564,8 +540,7 @@ void FreeMemory()
     }
 }
 
-int Solve()
-{
+int Solve() {
     currentDeg = -1;
     deg[currentDeg + 1].count = 0;
     for (i = 0; i < 8; i++) {
@@ -659,10 +634,9 @@ int Solve()
     return 0;
 }
 
-int SelectLevel()
-{
+int SelectLevel() {
     int tmpLv = 1, maxi, maxj;
-    FILE* f;
+    FILE *f;
     BackGround();
     setcolor(1);
     settextstyle(8, 0, 5);
@@ -724,8 +698,7 @@ int SelectLevel()
     }
 }
 
-void MainMenu()
-{
+void MainMenu() {
     int Choice = 0;
     BackGround();
     settextstyle(8, 0, 8);
@@ -775,8 +748,7 @@ void MainMenu()
     }
 }
 
-int Game()
-{
+int Game() {
     CountMB = 0;
     countListUndo = 0;
     BackGround();
@@ -903,8 +875,7 @@ int Game()
     }
 }
 
-int main()
-{
+int main() {
     DrawPath[0] = &DrawWall;
     DrawPath[1] = &DrawNothing;
     DrawPath[2] = &DrawDest;

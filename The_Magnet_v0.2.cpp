@@ -34,12 +34,11 @@ char txtRToRestart[] = "r to restart";
 char txtSharp[] = "#";
 char txtNewGame[] = "new game";
 char txtContinue[] = "continue";
-int Mx[4] = { 1, 0, -1, 0 }, My[4] = { 0, 1, 0, -1 };
-char c, NumText[18][3] = { "01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12", "13", "14", "15", "16", "17", "18" };
-int canMove[] = { 0, 1, 0, 1 };
+int Mx[4] = {1, 0, -1, 0}, My[4] = {0, 1, 0, -1};
+char c, NumText[18][3] = {"01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12", "13", "14", "15", "16", "17", "18"};
+int canMove[] = {0, 1, 0, 1};
 
-void DrawMagnet()
-{
+void DrawMagnet() {
     tmpX = STARTX + X * WIDTH + 14;
     tmpY = STARTY + Y * WIDTH + 14;
     setfillstyle(1, 0);
@@ -52,8 +51,7 @@ void DrawMagnet()
     bar(tmpX + 28, tmpY + 28, tmpX + 42, tmpY + 42);
 }
 
-void ClearMagnet()
-{
+void ClearMagnet() {
     tmpX = STARTX + X * WIDTH + 14;
     tmpY = STARTY + Y * WIDTH + 14;
     setfillstyle(1, BGC);
@@ -62,8 +60,7 @@ void ClearMagnet()
     bar(tmpX, tmpY + 28, tmpX + 42, tmpY + 42);
 }
 
-void DrawMagnetBox(int x, int y, int p)
-{
+void DrawMagnetBox(int x, int y, int p) {
     tmpX = STARTX + x * WIDTH + 14;
     tmpY = STARTY + y * WIDTH + 14;
     tmp = 4 - p * 3;
@@ -74,8 +71,7 @@ void DrawMagnetBox(int x, int y, int p)
     bar(tmpX, tmpY + 28, tmpX + 42, tmpY + 42);
 }
 
-void ClearMagnetBox(int x, int y)
-{
+void ClearMagnetBox(int x, int y) {
     tmpX = STARTX + x * WIDTH + 14;
     tmpY = STARTY + y * WIDTH + 14;
     setfillstyle(1, BGC);
@@ -85,8 +81,7 @@ void ClearMagnetBox(int x, int y)
     bar(tmpX, tmpY + 28, tmpX + 42, tmpY + 42);
 }
 
-void DrawWall(int x, int y)
-{
+void DrawWall(int x, int y) {
     x = STARTX + x * WIDTH;
     y = STARTY + y * WIDTH;
     setfillstyle(1, 8);
@@ -100,8 +95,7 @@ void DrawWall(int x, int y)
     bar(x + 10, y + 10, x + 60, y + 60);
 }
 
-void DrawNothing(int x, int y)
-{
+void DrawNothing(int x, int y) {
     x = STARTX + x * WIDTH;
     y = STARTY + y * WIDTH;
     setbkcolor(BGC);
@@ -116,8 +110,7 @@ void DrawNothing(int x, int y)
     bar(x + 42, y + 56, x + 70, y + 70);
 }
 
-void DrawDest(int x, int y)
-{
+void DrawDest(int x, int y) {
     x = STARTX + x * WIDTH + 14;
     y = STARTY + y * WIDTH + 14;
     setbkcolor(10);
@@ -125,16 +118,14 @@ void DrawDest(int x, int y)
     bar(x, y, x + 42, y + 42);
 }
 
-void DrawSwitch(int x, int y)
-{
+void DrawSwitch(int x, int y) {
     x = STARTX + x * WIDTH + 28;
     y = STARTY + y * WIDTH + 28;
     setfillstyle(1, 2);
     bar(x, y, x + 14, y + 14);
 }
 
-void ClearSwitch(int x, int y)
-{
+void ClearSwitch(int x, int y) {
     x = STARTX + x * WIDTH + 28;
     y = STARTY + y * WIDTH + 28;
     setfillstyle(1, BGC);
@@ -143,8 +134,7 @@ void ClearSwitch(int x, int y)
 
 void (*DrawPath[4])(int x, int y);
 
-void UndoFunc(Change c)
-{
+void UndoFunc(Change c) {
     switch (c.type) {
     case 0:
         ClearMagnet();
@@ -167,8 +157,7 @@ void UndoFunc(Change c)
     }
 }
 
-void BackGround()
-{
+void BackGround() {
     setcolor(8);
     setfillstyle(1, BGC);
     for (int i = 1; i < 8; i++)
@@ -176,11 +165,10 @@ void BackGround()
     bar(9, 9, MAXX - 8, MAXY - 8);
 }
 
-int ImportMap()
-{
-    FILE* f;
-    int* n;
-    char* s = new char(10);
+int ImportMap() {
+    FILE *f;
+    int *n;
+    char *s = new char(10);
     sprintf(s, "Map%d.txt", Level);
     f = fopen(s, "r");
     delete s;
@@ -209,8 +197,7 @@ int ImportMap()
     return 1;
 }
 
-void DrawSelect(int x, int y)
-{
+void DrawSelect(int x, int y) {
     setfillstyle(1, 4);
     x = 110 + x * 100;
     y = 160 + y * 100;
@@ -224,8 +211,7 @@ void DrawSelect(int x, int y)
     bar(x + 65, y + 75, x + 80, y + 80);
 }
 
-void ClearSelect(int x, int y)
-{
+void ClearSelect(int x, int y) {
     setfillstyle(1, BGC);
     x = 110 + x * 100;
     y = 160 + y * 100;
@@ -239,10 +225,9 @@ void ClearSelect(int x, int y)
     bar(x + 65, y + 75, x + 80, y + 80);
 }
 
-int SelectLevel()
-{
+int SelectLevel() {
     int tmpLv = 1, i, j, maxi, maxj;
-    FILE* f;
+    FILE *f;
     char s[10];
     BackGround();
     setcolor(1);
@@ -305,8 +290,7 @@ int SelectLevel()
     }
 }
 
-void MainMenu()
-{
+void MainMenu() {
     int Choice = 0;
     BackGround();
     settextstyle(8, 0, 8);
@@ -346,8 +330,7 @@ void MainMenu()
         case 13:
             if (Choice == 0) {
                 Level = 1;
-            }
-            else {
+            } else {
                 Level = SelectLevel();
             }
             return;
@@ -355,8 +338,7 @@ void MainMenu()
     }
 }
 
-int Game()
-{
+int Game() {
     CountMB = 0;
     CountList = 0;
     BackGround();
@@ -404,8 +386,7 @@ int Game()
                 List[CountList].change[0].type = 1;
                 List[CountList].count = 1;
                 CountList++;
-            }
-            else {
+            } else {
                 BoolMove[0] = BoolMove[1] = BoolMove[2] = BoolMove[3] = 1;
                 DoneMove = 0;
                 tmp2 = 1;
@@ -418,8 +399,7 @@ int Game()
                             if (!canMove[Map[tmpY2][tmpX2]]) {
                                 BoolMove[i] = 0;
                                 DoneMove++;
-                            }
-                            else if (MB[tmpY2][tmpX2] > -1) {
+                            } else if (MB[tmpY2][tmpX2] > -1) {
                                 BoolMove[i] = 0;
                                 DoneMove++;
                                 if (MB[tmpY2][tmpX2] == P) {
@@ -435,8 +415,7 @@ int Game()
                                         List[CountList].change[List[CountList].count].j = My[i];
                                         List[CountList].count++;
                                     }
-                                }
-                                else {
+                                } else {
                                     if (tmp2 > 1) {
                                         ClearMagnetBox(tmpX2, tmpY2);
                                         DrawMagnetBox(tmpX2 - Mx[i], tmpY2 - My[i], MB[tmpY2][tmpX2]);
@@ -483,8 +462,7 @@ int Game()
     }
 }
 
-int main()
-{
+int main() {
     DrawPath[0] = &DrawWall;
     DrawPath[1] = &DrawNothing;
     DrawPath[2] = &DrawDest;
