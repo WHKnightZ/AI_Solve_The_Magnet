@@ -244,11 +244,11 @@ int ImportMap() {
             n = &Map[i][j];
             fscanf(f, "%d", n);
             (*n)--;
-            if ((*n) > -1){
-            	DrawPath[(*n)](j, i);
-            	if ((*n) > 1)
-                	DrawPath[1](j, i);
-			}
+            if ((*n) > -1) {
+                DrawPath[(*n)](j, i);
+                if ((*n) > 1)
+                    DrawPath[1](j, i);
+            }
         }
     fscanf(f, "%d", &CountMB);
     for (int i = 0; i < CountMB; i++) {
