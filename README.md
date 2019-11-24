@@ -6,6 +6,7 @@ AI auto solve The Magnet game I've made before
 
 Setup:<br />
 - Setup MinGW/G++<br />
+- Setup Graphics.h<br />
 - Only build main.cpp<br />
 
 Linker:<br />
