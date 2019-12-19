@@ -166,10 +166,10 @@ void BackGround() {
 int ImportMap() {
     FILE *f;
     int *n;
-    char *s = new char(10);
+    char *s = new char[10];
     sprintf(s, "Map%d.txt", Level);
     f = fopen(s, "r");
-    delete s;
+    delete[] s;
     if (f == NULL)
         return 0;
     fscanf(f, "%d%d%d", &X, &Y, &S);
@@ -230,7 +230,7 @@ void CSL(int x, int y) {
 int SelectLevel() {
     int tmpLv = 1, i, j, maxi, maxj;
     FILE *f;
-    char *s = new char(10);
+    char *s = new char[10];
     BackGround();
     setcolor(1);
     settextstyle(8, 0, 5);
@@ -250,7 +250,7 @@ int SelectLevel() {
         fclose(f);
         tmpLv++;
     } while (true);
-    delete s;
+    delete[] s;
     tmpLv -= 2;
     maxi = tmpLv / 5;
     maxj = tmpLv % 5;
